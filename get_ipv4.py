@@ -46,22 +46,17 @@ for host in hosts:
     print("====================================")
     os.system("type log.txt")
 
-    if checkping(host.strip()) == "True":
+    if checkping(host.strip()):
         rs_os = os.popen("ping -4 -c 1 "+host).read()
 
         str1 = rs_os.split("[",1)
         str2 = str1[1].split("]")
 
-        txt = str(hosts.index(host)) + ";" + str(checkping(host.strip())) + ";" + host  
+        txt = str(hosts.index(host)) + ";" + str(checkping(host.strip())) + ";" + str2[0]  
         print(txt.strip())
     else:
-        txt = str(hosts.index(host)) + ";" + str(checkping(host.strip())) + ";" + host
+        txt = str(hosts.index(host)) + ";" + str(checkping(host.strip())) + ";" + "FORA"
         print(txt.strip())
     
     log_file = open('log.txt', 'a')    
     log_file.write(txt)
-
-    
-
-
-
