@@ -9,13 +9,14 @@
 import os
 import sys
 import re
-import whois #pip install python-whois
+import whois
 
-#removendo arquivos temporarios
-os.remove("whois_temp.txt")
-os.remove("result_whois.txt")
+if os.path.isfile("whois_temp.txt"):
+    os.remove("whois_temp.txt")
 
-#lendo a lista de hosts
+if os.path.isfile("result_whois.txt"):
+    os.remove("result_whois.txt")
+
 file = open(sys.argv[1],'r')
 conteudo = file.readlines()
 
@@ -25,23 +26,17 @@ def tempWhois(string):
     report.write(string.strip())
 
 #GetName
-def getName():
+def getName(string):
     temp_whois = open('whois_temp.txt', 'r')
     result_temp_whois = temp_whois.readlines()
     for line in result_temp_whois:
-        if re.search('owner:', line):
+        
+        if re.search(string, line):
             name=line.strip()
             break
-        elif re.search('Organization:', line):
-            name=line.strip()
-            break
-        elif re.search('NetName:', line):
-            name=line.strip()
-            break
-        elif re.search('Domain Name:', line):
-            name=line.strip()
-            break
-
+        else:
+            name="#:#"
+        
     array_country = name.split(":")        
     ct = array_country[1].strip()
     return ct
@@ -51,18 +46,21 @@ def insertData(host,string):
     report = open("result_whois.txt", 'a')    
     report.write(host.strip()+";"+string.strip()+"\n")
 
-#lendo os hosts
 cont = 0
+querys = ["owner:", "Organization:", "NetName:"]
+
 for host in conteudo:
     result = whois.whois(host.strip())    
     
     tempWhois(result.text)
 
-    cont = cont+1
+    cont = cont+1  
 
-    if getName():
-        insertData(host.strip(),getName())
-        print(str(cont)+";"+host.strip()+";"+getName())
-    else:        
-        insertData(host.strip(),"Blank")
-        print(str(cont)+";"+host.strip()+";Blank")
+    for q in querys:
+        if getName(q) != "#":
+            insertData(host.strip(),getName(q))
+            print(str(cont)+";"+host.strip()+";"+getName(q))
+            break
+        else:
+            insertData(host.strip(),"Blank")
+            print(str(cont)+";"+host.strip()+";Blank")
