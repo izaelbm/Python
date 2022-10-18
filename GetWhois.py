@@ -61,6 +61,3 @@ for host in conteudo:
             insertData(host.strip(),getName(q))
             print(str(cont)+";"+host.strip()+";"+getName(q))
             break
-        else:
-            insertData(host.strip(),"Blank")
-            print(str(cont)+";"+host.strip()+";Blank")
