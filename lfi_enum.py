@@ -2,6 +2,7 @@
 
 #importanto bibliotecas
 import requests
+import time
 
 #lendo o arquivo com os payloads
 file = open('payloadlist.txt','r')
@@ -30,9 +31,11 @@ for lfi in conteudo:
     #validando sucesso
     if(size > 0):
         print(str(cont) + ". [OK] -> " + str(lfi.strip()))
+        cont = cont + 1
     else:
         pass
-
-    cont = cont + 1
+    
+    #aguardando 30 segundos para iniciar outra requisicao
+    time.sleep(30)
 
 print("Concluido")
