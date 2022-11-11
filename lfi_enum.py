@@ -7,10 +7,10 @@ import requests
 file = open('payloadlist.txt','r')
 conteudo = file.readlines()
 
+cont = 1
+
 #percorrendo o arquivo
 for lfi in conteudo:
-
-    cont = 1
 
     #set do alvo
     url = "https://target.com.br"
@@ -29,8 +29,10 @@ for lfi in conteudo:
 
     #validando sucesso
     if(size > 0):
-        print(str(cont) + ". [OK] -> " + str(lfi.strip())+"\n")
+        print(str(cont) + ". [OK] -> " + str(lfi.strip()))
     else:
         pass
 
     cont = cont + 1
+
+print("Concluido")
